@@ -1,8 +1,8 @@
 from typing import Dict, Any
 from .base_schema import BaseSchema
-from core.yaml_node import YamlNode
-from core.yaml_tree import YamlTree
-from ui.inputs import InputHandler
+from ..core.yaml_node import YamlNode
+from ..core.yaml_tree import YamlTree
+from ..ui.inputs import InputHandler
 
 class CustomSchema(BaseSchema):
     name = "custom"

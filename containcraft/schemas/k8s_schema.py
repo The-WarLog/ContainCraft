@@ -2,7 +2,7 @@
 
 from .base_schema import BaseSchema
 from typing import Dict, Any
-from ui.inputs import InputHandler
+from ..ui.inputs import InputHandler
 class KubernetesSchema(BaseSchema):
     name = "kubernetes"
 

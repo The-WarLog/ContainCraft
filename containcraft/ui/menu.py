@@ -2,18 +2,18 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.syntax import Syntax
 from rich.prompt import Prompt
-from schemas.docker_schema import DockerComposeSchema
-from schemas.custom_schema import CustomSchema
-from schemas.k8s_schema import KubernetesSchema
-from schemas.kafka_schema import KafkaSchema
-from schemas.base_schema import BaseSchema
-from edit.edit_yaml import edit_yaml_session
-from ui.inputs import InputHandler
+from ..schemas.docker_schema import DockerComposeSchema
+from ..schemas.custom_schema import CustomSchema
+from ..schemas.k8s_schema import KubernetesSchema
+from ..schemas.kafka_schema import KafkaSchema
+from ..schemas.base_schema import BaseSchema
+from ..edit.edit_yaml import edit_yaml_session
+from .inputs import InputHandler
 
-from core.json_model import JSONModel
-from core.renderer import render_tree
-from core.yaml_tree import YamlTree
-from core.yaml_io import load_yaml, save_yaml
+from ..core.json_model import JSONModel
+from ..core.renderer import render_tree
+from ..core.yaml_tree import YamlTree
+from ..core.yaml_io import load_yaml, save_yaml
 from typing import Dict
 import yaml
 import os

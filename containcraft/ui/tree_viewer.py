@@ -2,7 +2,7 @@
 from rich.console import Console
 from rich.tree import Tree as RichTree
 from rich.panel import Panel
-from core.yaml_node import YamlNode
+from ..core.yaml_node import YamlNode
 
 console = Console()
 

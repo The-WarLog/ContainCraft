@@ -1,22 +1,10 @@
-from rich.console import Console
-from rich.align import Align
-from yaml_cli.banner import print_ascii_banner
-from ui.menu import Menu
+import sys
+import os
 
-console = Console()
+# Add current directory to path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-def main():
-    console.clear()
-    banner = print_ascii_banner()
-    for line in banner.splitlines():
-        console.print(Align.center(f"[bold magenta]{line}[/]"))
-    console.print(Align.center("[italic blue]Contain With Ease[/]"))
-    console.print()
-
-    menu = Menu()
-    menu.main_menu()
+from containcraft.cli import main
 
 if __name__ == "__main__":
     main()
-
-

@@ -2,7 +2,7 @@
 
 from .base_schema import BaseSchema
 from typing import Annotated,Any, Literal,Dict
-from ui.inputs import InputHandler
+from ..ui.inputs import InputHandler
 class KafkaSchema(BaseSchema):
     name = "kafka"
 

@@ -41,13 +41,6 @@ env/
 *.yml
 *.pdf
 
-# Logs
-*.log
-
 # Testing
 .pytest_cache/
 .coverage
-htmlcov/
-
-# OS
-Thumbs.db
