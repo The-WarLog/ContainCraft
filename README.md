@@ -4,7 +4,20 @@
 
 ContainCraft is a command-line interface (CLI) tool designed to simplify the creation, loading, and editing of YAML configuration files. Built with Python and Rich, it provides an interactive, user-friendly experience for managing YAML files with support for multiple predefined schemas including Docker Compose, Kubernetes, Kafka, and custom configurations.
 
-The application implements a complete workflow: CLI input → JSON data model → Tree structure → YAML output, allowing users to build, visualize, and modify YAML configurations with ease.
+
+The application implements a complete workflow:
+
+```mermaid
+graph LR
+    A[User Input] -->|CLI Prompts| B[JSON Data Model]
+    B -->|Conversion| C[Tree Structure]
+    C -->|Render| D[YAML Output]
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbf,stroke:#333,stroke-width:2px
+```
+
 
 ## Features
 
@@ -30,9 +43,12 @@ The application implements a complete workflow: CLI input → JSON data model �
 ### Setup
 
 1. Clone or download the project to your local machine:
+
 ```bash
-cd E:\API\TerMan\Bless (set your desired path)
+git clone https://github.com/yourusername/ContainCraft.git
+cd ContainCraft
 ```
+
 
 2. Create and activate a virtual environment (recommended):
 ```bash
@@ -51,37 +67,42 @@ pip install -r requirements.txt
 
 ### Starting the Application
 
+
 ```bash
-python .\CLI.py
+python CLI.py
 ```
+
 
 The CLI will display the main menu with four options:
 
 ### Menu Options
 
-**1. Create new YAML**
-- Choose a predefined schema (Docker Compose, Kubernetes, Kafka, Custom)
-- Follow interactive prompts to input configuration details
-- Save the generated YAML file
+### User Interaction Flow
 
-**2. Load existing YAML**
-- Provide path to an existing YAML file
-- View the YAML content with syntax highlighting
-- Display the configuration as a tree structure
+```mermaid
+graph TD
+    Start((Start)) --> Menu[Main Menu]
+    
+    Menu -->|1| Create[Create New YAML]
+    Create --> SchemaSelect{Select Schema}
+    SchemaSelect --> Docker[Docker Compose]
+    SchemaSelect --> K8s[Kubernetes]
+    SchemaSelect --> Kafka[Kafka]
+    SchemaSelect --> Custom[Custom]
+    
+    Menu -->|2| Load[Load Existing YAML]
+    Load --> View[View Content]
+    Load --> Tree[View Tree]
+    
+    Menu -->|3| Edit[Edit YAML]
+    Edit --> Actions{Edit Actions}
+    Actions --> SetVal[Set Value]
+    Actions --> Append[Append List]
+    Actions --> Save[Preview & Save]
+    
+    Menu -->|4| Exit((Exit))
+```
 
-**3. Edit YAML**
-- Load an existing YAML file
-- Choose from editing actions:
-  - Set value at path
-  - Append to list
-  - Delete key
-  - Show available keys
-  - Undo last change
-  - Preview and save changes
-  - Cancel without saving
-
-**4. Exit**
-- Close the application
 
 ### Examples
 
@@ -109,230 +130,21 @@ The CLI will display the main menu with four options:
 9. Confirm save
 ```
 
-## Project Structure
 
-```
-ContainCraft/
-├── CLI.py                      # Main entry point
-├── README.md                   # Project documentation
-├── requirements.txt            # Python dependencies
-├── core/                       # Core data structures and utilities
-│   ├── json_model.py          # JSON data model
-│   ├── renderer.py            # Tree rendering functionality
-│   ├── yaml_io.py             # YAML read/write operations
-│   ├── yaml_node.py           # Tree node structure
-│   └── yaml_tree.py           # Tree management
-├── schemas/                    # YAML schema definitions
-│   ├── base_schema.py         # Abstract base schema
-│   ├── docker_schema.py       # Docker Compose schema
-│   ├── k8s_schema.py          # Kubernetes schema
-│   ├── kafka_schema.py        # Kafka configuration schema
-│   └── custom_schema.py       # Custom YAML builder schema
-├── ui/                         # User interface components
-│   ├── inputs.py              # Input handler (prompts, validation)
-│   ├── menu.py                # Main menu and workflow management
-│   └── tree_viewer.py         # Tree visualization
-├── edit/                       # YAML editing functionality
-│   └── edit_yaml.py           # In-process editor with preview
-└── yaml_cli/                   # CLI utilities
-  └── banner.py              # ASCII banner display
-```
-
-## Core Components
-
-### YAML Processing Pipeline
-
-The application follows a structured pipeline for YAML processing:
-
-1. **Input**: User provides data through interactive CLI prompts
-2. **JSON Model**: Data is stored as a dictionary structure
-3. **Tree Structure**: JSON is converted to a tree representation using `YamlNode` and `YamlTree`
-4. **Output**: Tree is converted back to dictionary and saved as YAML file
-
-### Data Structures
-
-#### YamlNode
-Represents a single node in the YAML tree with:
-- `key`: Node identifier
-- `value`: Leaf node value (primitive types)
-- `children`: List of child nodes
-
-#### YamlTree
-Manages the tree structure with methods for:
-- Loading dictionary to tree (`load_from_dict`)
-- Converting tree to dictionary (`tree_to_dict`)
-- Converting dictionary to tree (`dict_to_tree`)
-- Handling virtual roots for multi-key YAML files
-
-### Schema System
-
-Each schema extends `BaseSchema` abstract class and implements:
-- `guide_user_input(ui)`: Interactive user input to collect data
-- `validate(data)`: Validation of collected data
-- `default_structure()`: Default template structure
-
-#### Schema Details
-
-**Docker Compose Schema**
-- Supports multiple services with individual configurations
-- Collects: image, ports, volumes, environment variables, restart policy
-- Output: Valid Docker Compose v3 YAML
-
-**Kubernetes Schema**
-- Supports Deployment and Service resources
-- Collects: API version, kind, metadata, specifications
-- Output: Valid Kubernetes YAML manifests
-
-**Kafka Schema**
-- Broker configuration management
-- Collects: broker IDs, listeners, log directories, environment variables
-- Output: Kafka broker configuration
-
-**Custom Schema**
-- Free-form YAML builder for non-standard configurations
-- Supports: strings, numbers, lists, nested objects
-- Output: Fully customizable YAML structure
-
-### Input Handler
-
-Provides reusable input methods:
-- `get_string()`: Single-line text input
-- `get_number()`: Integer input with min/max validation
-- `get_yes_no()`: Boolean confirmation
-- `get_choice()`: Selection from list
-- `get_list()`: Comma-separated list input
-- `get_key_value_pairs()`: Dictionary input
-- `get_path_existing()`: File path with validation
-
-### YAML Editor
-
-In-process editor (`edit_yaml.py`) features:
-- Non-destructive editing with undo per action
-- Path-based value setting with full path notation
-- List append operations
-- Key deletion
-- Interactive key discovery
-- Before/after preview with syntax highlighting
-- Automatic rollback on errors
-
-## Technical Specifications
-
-### YAML Output Format
-
-The application generates YAML with the following formatting:
-- Block style lists (using dashes `-`)
-- No sorted keys (maintains input order)
-- Proper indentation (2 spaces)
-- Proper type handling (lists, dicts, strings, numbers)
-
-Example output:
-```yaml
-version: '3'
-services:
-  kafka:
-    image: confluentinc/cp-kafka:7.5.0
-    ports:
-    - 9092:9092
-    - 29092:29092
-    volumes:
-    - /data:/var/lib/kafka/data
-    environment:
-      KAFKA_BROKER_ID: '1'
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    restart: always
-```
+## Tips
 
 ### Path Notation
-
-Access nested values using dot notation:
+When editing, you can access nested values using dot notation:
 - Simple keys: `services`
 - Nested keys: `services.kafka.environment`
 - Leaf values: `services.kafka.environment.KAFKA_BROKER_ID`
-- List indices: `arr[0].field` (future support)
-
-### Type System
-
-The application preserves data types:
-- Strings: Text values with automatic quoting in YAML
-- Numbers: Integer values
-- Lists: Ordered collections with dash notation
-- Dicts: Key-value pairs with proper nesting
-- Null: Represented as empty lists `[]` or dicts `{}`
-
-## Dependencies
-
-- **rich** (>=13.0.0): Rich text and formatting in the terminal
-- **pyyaml** (>=6.0): YAML parsing and generation
-- **blessed** (>=1.20.0): Terminal capability detection (legacy)
-
-See `requirements.txt` for complete dependency list with versions.
-
-## File Operations
-
-### Supported Extensions
-
-- `.yaml`: Standard YAML files
-- `.yml`: Alternative YAML extension
-
-### File Handling
-
-- **Load**: Application reads and parses existing YAML files
-- **Create**: New YAML files are generated from user input
-- **Edit**: Existing files are modified in-process and saved
-- **Save**: Files are saved with proper formatting and validation
-- **Path Validation**: Ensures provided file paths exist for loading and are valid for saving
-
-### Error Handling
-
-The application includes error handling for:
-- Invalid file paths
-- Malformed YAML syntax
-- Invalid path navigation during editing
-- Type mismatches in value assignment
-- Missing required keys
-
-## Development Notes
-
-### Design Patterns
-
-1. **Schema Pattern**: Abstract base schema with concrete implementations
-2. **Tree Pattern**: Tree-based representation of hierarchical YAML
-3. **Command Pattern**: Menu-driven action selection
-4. **Factory Pattern**: Schema instantiation based on user selection
-
-### Code Organization
-
-- **Separation of Concerns**: UI, schemas, and core logic are separated
-- **Type Hints**: Python type annotations for clarity
-- **Abstract Classes**: BaseSchema enforces interface contract
-- **Immutability**: Working copies prevent accidental modifications
-
-### Testing Recommendations
-
-1. Create YAML with each schema type
-2. Load and verify YAML output format
-3. Edit YAML and verify changes persist
-4. Test edge cases (empty lists, special characters, deep nesting)
-5. Validate against production tools (docker-compose, kubectl)
-
-## Production Readiness
-
-This application is designed for production use cases including:
-- Creating Docker Compose files for containerized deployments
-- Generating Kubernetes manifests for orchestration
-- Managing Kafka broker configurations
-- Building custom YAML configurations
 
 ### Validation
+Before deploying generated YAML files, it is recommended to verify them:
+- **Docker Compose**: Run `docker-compose config`
+- **Kubernetes**: Run `kubectl apply --dry-run=client -f <file>`
+- **Kafka**: Verify against your broker version documentation.
 
-Before deploying generated YAML files:
-1. Verify with appropriate validation tools:
-  - Docker Compose: `docker-compose config` (see compose file reference: https://docs.docker.com/compose/compose-file/)
-  - Kubernetes: `kubectl apply --dry-run=client` (kubectl reference: https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands/#apply)
-  - Kafka: Broker configuration reference: https://kafka.apache.org/documentation/#configuration
-
-2. Review configuration values for security and correctness
-3. Test in staging environment before production deployment
 
 ## Troubleshooting
 
