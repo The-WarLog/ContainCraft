@@ -37,7 +37,7 @@ graph LR
 
 ### Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - pip (Python package manager)
 
 ### Setup
@@ -58,19 +58,48 @@ python -m venv venv
 source venv/bin/activate     # On Linux/macOS
 ```
 
-3. Install dependencies:
+2. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+
+### Setup with uv (Recommended)
+
+1. Initialize and install:
+```bash
+uv sync
+```
+
+
+2. Run the application:
+```bash
+# First, ensure you are in the virtual environment
+source .venv/bin/activate
+
+# Now you can just run:
+contain
+```
+
+### Global Install (Optional)
+To run `contain` from anywhere without activating the environment:
+```bash
+uv tool install .
+contain
+```
+
+
 
 ## Usage
 
 ### Starting the Application
 
 
+
 ```bash
-python CLI.py
+contain
 ```
+
+
 
 
 The CLI will display the main menu with four options:
