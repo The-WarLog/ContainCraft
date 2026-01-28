@@ -76,8 +76,17 @@ class Menu:
     #  load YAML 
 
     def load_yaml_flow(self):
-        file_path = self.ui.get_path_existing("Enter YAML file path")
+        file_path = self.ui.get_path_existing("Enter YAML file path or press enter to go back to main menu")
+        # User pressed Enter to go back to main menu
+        if file_path is None:
+            return
+        
         data = load_yaml(file_path)
+        # If data is None, file couldn't be loaded
+        if data is None:
+            console.print("[bold red]Error: Could not load YAML file[/]")
+            input("Press Enter to continue...")
+            return
 
         console.print("\n[bold cyan]Loaded YAML:[/]\n")
         yaml_str = yaml.safe_dump(data, sort_keys=False, default_flow_style=False)

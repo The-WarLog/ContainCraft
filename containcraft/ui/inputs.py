@@ -1,6 +1,7 @@
 from rich.console import Console
 from rich.prompt import Prompt, Confirm, IntPrompt
 from rich.panel import Panel
+from pathlib import Path
 import os
 
 console = Console()
@@ -57,13 +58,21 @@ class InputHandler:
         return data
 
     def get_path_existing(self, prompt: str):
-        """Prompt for a file path; accept quoted paths; ensure it exists."""
+        """Prompt for a file path; accept quoted paths; ensure it exists. Returns None if user presses Enter to go back."""
         while True:
             raw = self.get_string(prompt)
             path = raw.strip().strip('"').strip("'")
             path = os.path.expanduser(path)
-            if os.path.isfile(path):
+            #what if the user just pressed enter to go back to main menu
+            if path=="":
+                return None
+                
+            if not path.endswith(('.yaml', '.yml')):
+                path += '.yaml'
+            file_dir=Path(path).cwd().rglob(Path(path).name)
+            if any(file_dir):
                 return path
-            console.print("[bold red]Invalid path, file not found. Please try again.[/]")
+            if not os.path.isfile(path):
+                console.print(f"[bold red]File does not exist: {path}[/]")
 
             

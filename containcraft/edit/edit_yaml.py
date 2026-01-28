@@ -72,7 +72,7 @@ def _show_keys(data, prefix=""):
         for i in range(len(data)):
             console.print(f"  [cyan]{prefix}[{i}][/]")
 
-def edit_yaml_session(data: dict) -> dict | None:
+def edit_yaml_session(data: dict | None) -> dict | None:
     original = data
     working = copy.deepcopy(original)
     history = []
