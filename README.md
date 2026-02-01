@@ -29,6 +29,7 @@ graph LR
   - Custom YAML Builder (flexible key-value structure)
 - **YAML Loading**: Load and display existing YAML files with syntax-highlighted preview.
 - **YAML Editing**: Edit YAML files in-process with preview and undo functionality before saving.
+- **File Conversion**: Bidirectional JSON ↔ YAML conversion with preview before saving.
 - **Tree Visualization**: Display loaded YAML as an indented tree structure for easy navigation.
 - **Path-based Navigation**: Access nested YAML values using dot notation (e.g., `services.kafka.environment.KAFKA_BROKER_ID`) the user can save both the absolute and relative path if the path is not mentioned then it defaults to current directory.
 - **Rich CLI Interface**: Beautiful, colored output with panels, syntax highlighting, and responsive design.
@@ -129,7 +130,14 @@ graph TD
     Actions --> Append[Append List]
     Actions --> Save[Preview & Save]
     
-    Menu -->|4| Exit((Exit))
+    Menu -->|4| Convert[Convert Files]
+    Convert --> ConvertType{Conversion Type}
+    ConvertType --> J2Y[JSON → YAML]
+    ConvertType --> Y2J[YAML → JSON]
+    J2Y --> Preview1[Preview]
+    Y2J --> Preview2[Preview]
+    
+    Menu -->|5| Exit((Exit))
 ```
 
 
@@ -157,6 +165,20 @@ graph TD
 7. Enter new value: 2
 8. Choose: 6 (Preview and save)
 9. Confirm save
+```
+
+#### Converting Between JSON and YAML
+
+```
+1. Select: 4 (Convert Files)
+2. Choose conversion type:
+   - JSON → YAML: Convert JSON configuration to YAML format
+   - YAML → JSON: Convert YAML configuration to JSON format
+3. Enter source file path
+4. Review the preview of converted content
+5. Confirm conversion
+6. Enter output file path
+7. File is converted and saved
 ```
 
 
